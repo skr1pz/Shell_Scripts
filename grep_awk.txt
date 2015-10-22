@@ -1,0 +1,5 @@
+749654/QEJBSVR/MYUHSTEST
+
+ps -u qejbsvr | grep myuhstest | awk 'length($1) == 7 { print $1 }' 
+
+var1=$(ps -u qejbsvr | grep myuhstest | awk 'length($1) == 7 { print $1 }') 

@@ -1,0 +1,126 @@
+DataBank
+
+DR_FLEX_CLUSTER
+
+~ # esxcli storage vmfs extent list
+Volume Name     VMFS UUID                            Extent Number  Device Name
+--------------  -----------------------------------  -------------  ------------
+DR_VM_STORE_3   530e1cea-a3610062-e2a2-0090fa3bee24              0  naa.6000d310
+DR_VM_STORE_2   530e1cc8-7ff4404c-207f-0090fa3bee24              0  naa.6000d310
+DR_VM_STORE_4   530e1d02-1e8b9908-27f9-0090fa3bee24              0  naa.6000d310
+DR_SQL_STORE_2  546a1fe2-4f46f46c-438a-0090fa3bd4b2              0  naa.6000d310
+DR_SQL_STORE_3  546a203a-137ad973-2a30-0090fa3bd4b2              0  naa.6000d310
+DR_SQL_STORE_1  546a1fa3-1fe9982f-09eb-0090fa3bd4b2              0  naa.6000d310
+DR_VM_STORE_5   530e1e33-5edba59c-ac38-0090fa3bee24              0  naa.6000d310
+vmfs_iso        54381e8a-d783ff5e-05cc-0090fa2cd73a              0  naa.6000d310
+DR_VM_STORE_1   530b3cc8-d0139ffb-ada8-0090fa3bd4b2              0  naa.6000d310
+~ # esxcli storage vmfs unmap --volume-uuid=546a1fe2-4f46f46c-438a-0090fa3bd4b2
+
+
+DR_PROD_CLUSTER
+
+~ # esxcli storage vmfs extent list
+Volume Name                   VMFS UUID                            Extent Number
+----------------------------  -----------------------------------  -------------
+drprodvmhost_1_local_storage  5460d7e5-75976f10-52e5-e41f1361fa88              0
+vmfs_iso                      54381e8a-d783ff5e-05cc-0090fa2cd73a              0
+DR_PROD_VM_STORE_1            5498b760-4463da30-7d5f-e41f13617730              0
+DR_PROD_VM_STORE_2            5498b799-7ff60f48-cbb3-e41f13617730              0
+DR_PROD_VM_STORE_3            5498b7c2-1005403c-e9a4-e41f13617730              0
+
+
+
+
+
+Sungard
+
+prod_cluster
+
+~ # esxcli storage vmfs extent list
+Volume Name                VMFS UUID                            Extent Number  Device Name                           Partition
+-------------------------  -----------------------------------  -------------  ------------------------------------  ---------
+vmfs_iso                   4bec21fd-7551d20c-e225-001517dca68d              0  naa.6000d310001ab7000000000000000005          1
+PROD_VM_STORE_1            53037250-bbfa8852-cdba-3440b5a18f7c              0  naa.6000d310001ab7000000000000000099          1
+PROD_VM_STORE_3            530375e4-aa08fa8f-c432-3440b5a18f7c              0  naa.6000d310001ab700000000000000009b          1
+PROD_VM_STORE_4            530377bb-48329997-7b34-3440b5a18f7c              0  naa.6000d310001ab700000000000000009c          1
+PROD_VM_STORE_5            53037b64-c804a728-aa5a-3440b5a18f7c              0  naa.6000d310001ab700000000000000009d          1
+prodvmhost1_local_storage  4be974fd-4f631828-1f4c-e41f1361ff82              0  naa.600508e000000000d90fcfde95c27e09          3
+PROD_VM_STORE_2            5303741e-949e0e6a-52ae-3440b5a18f7c              0  naa.6000d310001ab700000000000000009a          1
+
+
+
+PROD_FLEX_CLUSTER
+
+~ # esxcli storage vmfs extent list
+Volume Name        VMFS UUID                            Extent Number  Device Name                           Partition
+-----------------  -----------------------------------  -------------  ------------------------------------  ---------
+PROD_FLEX_STORE_5  53ea4435-b9897516-7892-0090fa2cf430              0  naa.6000d310001ab70000000000000000cc          1
+PROD_FLEX_STORE_1  53ea43cc-2f014dec-b179-0090fa2cf430              0  naa.6000d310001ab70000000000000000c7          1
+vmfs_iso           4bec21fd-7551d20c-e225-001517dca68d              0  naa.6000d310001ab7000000000000000005          1
+PROD_FLEX_STORE_4  53ea4421-879ef324-211f-0090fa2cf430              0  naa.6000d310001ab70000000000000000cb          1
+PROD_FLEX_STORE_2  53ea43e7-b1253d4f-551e-0090fa2cf430              0  naa.6000d310001ab70000000000000000c8          1
+PROD_FLEX_STORE_3  53ea4407-ca4a6d36-ff5e-0090fa2cf430              0  naa.6000d310001ab70000000000000000c9          1
+SQL_STORE_1        54920fc6-5af7ccd6-22aa-0090fa2cf430              0  naa.6000d310001ab7000000000000000106          1
+SQL_STORE_2        54920fda-b5d0f77e-08dd-0090fa2cf430              0  naa.6000d310001ab7000000000000000108          1
+SQL_STORE_3        54920fef-1a7abda8-3438-0090fa2cf430              0  naa.6000d310001ab700000000000000010a          1
+
+
+touch /tmp/unmap_result.csv
+chmod 664 /tmp/unmap_result.csv
+
+vi /var/spool/cron/crontabs/root
+
+0 3 15 * * /bin/unmap.sh >> /tmp/unmap_result.csv 2>&1 # Run unmap script every month at 3am on the 15th - MDM 20150217
+
+cat /var/run/crond.pid
+kill ??
+/usr/lib/vmware/busybox/bin/busybox crond
+
+vi /etc/rc.local.d/local.sh
+
+
+#entry for unmap cron job persistence
+/bin/kill $(cat /var/run/crond.pid)
+/bin/echo '0 3 15 * * /bin/unmap.sh >> /tmp/unmap_result.csv 2>&1 # Run unmap script every month at 3am on the 15th - MDM 20150217' >> /var/spool/cron/crontabs/root
+/usr/lib/vmware/busybox/bin/busybox crond
+
+/sbin/auto-backup.sh
+
+
+#!/bin/sh
+#############################################
+## Written by Mark Mayer Feb, 17th 2015 to ##
+##    unmap volumes - DR_FLEX_CLUSTER      ##
+#############################################
+
+
+#DR_VM_STORE
+esxcli storage vmfs unmap --volume-uuid=530b3cc8-d0139ffb-ada8-0090fa3bd4b2
+esxcli storage vmfs unmap --volume-uuid=530e1cc8-7ff4404c-207f-0090fa3bee24
+esxcli storage vmfs unmap --volume-uuid=530e1cea-a3610062-e2a2-0090fa3bee24
+esxcli storage vmfs unmap --volume-uuid=530e1d02-1e8b9908-27f9-0090fa3bee24
+esxcli storage vmfs unmap --volume-uuid=530e1e33-5edba59c-ac38-0090fa3bee24
+
+
+#DR_SQL_STORE
+esxcli storage vmfs unmap --volume-uuid=546a1fa3-1fe9982f-09eb-0090fa3bd4b2
+esxcli storage vmfs unmap --volume-uuid=546a1fe2-4f46f46c-438a-0090fa3bd4b2
+esxcli storage vmfs unmap --volume-uuid=546a203a-137ad973-2a30-0090fa3bd4b2
+
+
+#VMFS_ISO
+esxcli storage vmfs unmap --volume-uuid=54381e8a-d783ff5e-05cc-0090fa2cd73a
+
+
+exit 0
+
+
+
+http://www.jules.fm/Logbook/files/add_cron_job_vmware.html
+
+http://apice.unibo.it/xwiki/bin/view/Apice/esxiScheduling
+
+http://kb.vmware.com/selfservice/microsites/search.do?language=en_US&cmd=displayKC&externalId=1033346
+
+http://www.catonmat.net/blog/sudo-vim/
+

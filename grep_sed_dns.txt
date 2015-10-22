@@ -1,0 +1,11 @@
+
+grep -rl 'nameserver 172.16.20.68' /etc/resolv.conf | xargs sed -i 's/nameserver 172.16.20.68/nameserver 172.16.20.70/g'
+grep -rl 'nameserver 172.16.20.56' /etc/resolv.conf | xargs sed -i 's/nameserver 172.16.20.56/nameserver 172.16.10.26/g'
+grep -rl 'nameserver 172.16.10.67' /etc/resolv.conf | xargs sed -i 's/nameserver 172.16.10.67/nameserver 172.16.10.26/g'
+grep -rl 'nameserver 172.16.65.50' /etc/resolv.conf | xargs sed -i 's/nameserver 172.16.65.50/nameserver 172.16.10.26/g'
+grep -rl 'dns-nameservers 172.16.20.68 172.16.20.56' /etc/network/interfaces | xargs sed -i 's/dns-nameservers 172.16.20.68 172.16.20.56/dns-nameservers 172.16.20.70 172.16.10.26/g'
+grep -rl 'dns-nameservers 172.16.20.56 172.16.20.68' /etc/network/interfaces | xargs sed -i 's/dns-nameservers 172.16.20.56 172.16.20.68/dns-nameservers 172.16.20.70 172.16.10.26/g'
+grep -rl 'dns-nameservers 172.16.20.68 172.16.10.67' /etc/network/interfaces | xargs sed -i 's/dns-nameservers 172.16.20.68 172.16.10.67/dns-nameservers 172.16.20.70 172.16.10.26/g'
+grep -rl 'dns-nameservers 172.16.10.67 172.16.20.68' /etc/network/interfaces | xargs sed -i 's/dns-nameservers 172.16.10.67 172.16.20.68/dns-nameservers 172.16.20.70 172.16.10.26/g'
+grep -rl 'dns-nameservers 172.16.20.68 172.16.65.50' /etc/network/interfaces | xargs sed -i 's/dns-nameservers 172.16.20.68 172.16.65.50/dns-nameservers 172.16.20.70 172.16.10.26/g'
+grep -rl 'dns-nameservers 172.16.65.50 172.16.20.68' /etc/network/interfaces | xargs sed -i 's/dns-nameservers 172.16.65.50 172.16.20.68/dns-nameservers 172.16.20.70 172.16.10.26/g'
