@@ -28,7 +28,7 @@ for server in ${servers[@]}
 do
 # Command to patch
 
-sshpass -p m0b113@dm1n ssh -t -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no uhsmobile@$server "sudo apt-get clean && sudo apt-get -y update && sudo apt-get -y install libc6 && ldd --version && wget https://webshare.uchicago.edu/orgs/ITServices/itsec/Downloads/GHOST.c && gcc GHOST.c -o GHOST && ./GHOST && sudo reboot"
+sshpass -p $passphrase ssh -t -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no $username@$server "sudo apt-get clean && sudo apt-get -y update && sudo apt-get -y install libc6 && ldd --version && wget https://webshare.uchicago.edu/orgs/ITServices/itsec/Downloads/GHOST.c && gcc GHOST.c -o GHOST && ./GHOST && sudo reboot"
 read -p 'Press enter to continue'
 done
 
