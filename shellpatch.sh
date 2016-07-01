@@ -30,6 +30,6 @@ for server in ${servers[@]}
 do
 # Command to patch
 
-ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no uhsmobile@$server "echo m0b113@dm1n | sudo -S curl https://shellshocker.net/fixbash | sh"
+ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no $username@$server "echo $passphrase | sudo -S curl https://shellshocker.net/fixbash | sh"
 
 done
