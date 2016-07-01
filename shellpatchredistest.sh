@@ -10,6 +10,6 @@ for server in ${servers[@]}
 do
 # Command to patch
 
-ssh uhsmobile@$server "echo m0b113@dm1n | sudo -S curl https://shellshocker.net/fixbash | sh"
+ssh $username@$server "echo $passphrase | sudo -S curl https://shellshocker.net/fixbash | sh"
 
 done
