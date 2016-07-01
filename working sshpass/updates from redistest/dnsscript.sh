@@ -24,7 +24,7 @@ for server in ${servers[@]}
 do
 # Command to patch
 
-sshpass -p m0b113@dm1n ssh -t -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no uhsmobile@$server "sudo grep -rl 'nameserver 172.16.10.67' /etc/resolv.conf | xargs sudo sed -i 's/nameserver 172.16.10.67/nameserver 172.16.10.26/g' && sudo grep -rl 'dns-nameservers 172.16.20.68 172.16.10.67' /etc/network/interfaces | xargs sudo sed -i 's/dns-nameservers 172.16.20.68 172.16.10.67/dns-nameservers 172.16.20.70 172.16.10.26/g' && cat /etc/resolv.conf && cat /etc/network/interfaces"
+sshpass -p $passphrase ssh -t -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no $username@$server "sudo grep -rl 'nameserver 172.16.10.67' /etc/resolv.conf | xargs sudo sed -i 's/nameserver 172.16.10.67/nameserver 172.16.10.26/g' && sudo grep -rl 'dns-nameservers 172.16.20.68 172.16.10.67' /etc/network/interfaces | xargs sudo sed -i 's/dns-nameservers 172.16.20.68 172.16.10.67/dns-nameservers 172.16.20.70 172.16.10.26/g' && cat /etc/resolv.conf && cat /etc/network/interfaces"
 read -p 'Press enter to continue'
 done
 
